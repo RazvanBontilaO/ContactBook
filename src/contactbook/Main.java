@@ -10,9 +10,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         while(running){
-            System.out.println("Enter action (add, list, edit, delete, exit): ");
+            System.out.println("Enter action (add, list, edit, delete, exit, search): ");
             String command = scanner.nextLine();
-            switch (command.toLowerCase()){
+            switch (command.toLowerCase().trim()){
                 case "add" -> {
                     System.out.println("Enter first name: ");
                     String firstName = scanner.nextLine();
@@ -47,10 +47,12 @@ public class Main {
                                 case "last name" -> {
                                     System.out.println("Enter new last name: ");
                                     String newLastName = scanner.nextLine();
+                                    contact.setLastName(newLastName);
                                 }
                                 case "phone number" -> {
                                     System.out.println("Enter new phone number: ");
                                     String newPhoneNumber = scanner.nextLine();
+                                    contact.setPhoneNumber(newPhoneNumber);
                                 }
                                 default -> System.out.println("Invalid field");
                             }
@@ -64,9 +66,27 @@ public class Main {
                     for (Contact contact : contacts) {
                         if(index == contacts.indexOf(contact)){
                             contacts.remove(contact);
+                            System.out.println("The record has been deleted");
+                        }
+                        else{
+                            System.out.println("No such record");
                         }
                     }
-                    System.out.println("The record has been deleted");
+                }
+                case "search" -> {
+                    System.out.println("Enter the name/phone number to search for: ");
+                    String search = scanner.nextLine();
+                    for (Contact contact : contacts) {
+                        if(contact.getFirstName().toLowerCase().contains(search.toLowerCase()) ||
+                                contact.getLastName().toLowerCase().contains(search.toLowerCase()) ||
+                                        contact.getPhoneNumber().contains(search.toLowerCase())){
+                            System.out.println("Found records:");
+                                System.out.println(contact);
+                        }
+                        else{
+                            System.out.println("No records found");
+                        }
+                    }
                 }
                 case "exit" -> running = false;
                 default -> System.out.println("Invalid command");
