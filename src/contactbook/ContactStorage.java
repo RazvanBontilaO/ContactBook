@@ -12,20 +12,24 @@ public class ContactStorage {
             outputStream.writeObject(contact);
             System.out.println("Contacts saved to file");
         } catch (IOException e) {
-            System.out.println("Error saving contacts to file" + e.getMessage());
+            System.out.println("Error saving contacts to file: " + e.getMessage());
         }
     }
 
     @SuppressWarnings("unchecked")
     public static List<Contact> loadContacts(){
-        try (ObjectInputStream inputStream = new ObjectInputStream(ContactStorage.class.getResourceAsStream(FILE_NAME))){
-            return (List<Contact>) inputStream.readObject();
-        } catch (FileNotFoundException e) {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
             System.out.println("No saved contacts found, starting with a new one");
+            return new ArrayList<>();
+        }
+        
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file))){
+            return (List<Contact>) inputStream.readObject();
         } catch (IOException e) {
-            System.out.println("Error loading contacts from file" + e.getMessage());
+            System.out.println("Error loading contacts from file: " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            System.out.println("Class not found" + e.getMessage());
+            System.out.println("Class not found: " + e.getMessage());
         }
         return new ArrayList<>();
     }
