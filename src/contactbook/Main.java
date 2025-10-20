@@ -1,12 +1,14 @@
 package contactbook;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        List<Contact> contacts = new ArrayList<>();
+    public static void main(String[] args) throws IOException {
+        List<Contact> contacts = ContactStorage.loadContacts();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         while(running){
